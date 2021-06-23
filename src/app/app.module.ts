@@ -6,6 +6,9 @@ import {HeaderComponent} from './layouts/home/header/header.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from "./layouts/home/home.component";
 import {FooterComponent} from "./layouts/home/footer/footer.component";
+import {HttpClientModule} from "@angular/common/http";
+import {PaginationModule} from "ngx-bootstrap/pagination";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import {FooterComponent} from "./layouts/home/footer/footer.component";
   imports: [
     BrowserModule,
     StoreModule.forRoot({}, {}),
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    PaginationModule.forRoot(),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
