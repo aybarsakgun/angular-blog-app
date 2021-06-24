@@ -1,12 +1,11 @@
-<div class="input-group mb-3">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Search by name..."
-    [ngModel]="nameFilter$ | async"
-    (ngModelChange)="nameFilter$.next($event)">
-  <div class="input-group-append">
-    <button class="btn btn-outline-success" type="button">Search</button>
+<div class="row justify-content-end">
+  <div class="col-3 my-3">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search by name..."
+      [ngModel]="userListService.nameFilter$ | async"
+      (ngModelChange)="userListService.changeNameFilter($event)">
   </div>
 </div>
 <ng-container *ngIf="users$ | async as users else loading">
@@ -26,16 +25,20 @@
       <td>{{ user.email }}</td>
       <td>{{ user.gender }}</td>
       <td>{{ user.status }}</td>
-      <td></td>
+      <td>
+        <button type="button" class="btn btn-success" [routerLink]="['/posts/' + user.id]">View Posts</button>
+      </td>
     </tr>
     </tbody>
   </table>
-  <pagination
-    [totalItems]="users.meta.pagination.total"
-    [itemsPerPage]="users.meta.pagination.limit"
-    [maxSize]="10"
-    [ngModel]="currentPage$ | async"
-    (ngModelChange)="currentPage$.next($event)">
-  </pagination>
+  <div class="row justify-content-end">
+    <pagination
+      [totalItems]="users.meta.pagination.total"
+      [itemsPerPage]="users.meta.pagination.limit"
+      [maxSize]="10"
+      [ngModel]="userListService.currentPage$ | async"
+      (ngModelChange)="userListService.changePage($event)">
+    </pagination>
+  </div>
 </ng-container>
 <ng-template #loading>Loading...</ng-template>
