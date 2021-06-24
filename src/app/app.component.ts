@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,8 @@ import {Component} from '@angular/core';
       <router-outlet></router-outlet>
     </div>
     <app-footer></app-footer>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 }

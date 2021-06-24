@@ -1,9 +1,10 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../../shared/services/user.service";
+import {UserHttpService} from "../../shared/services/user-http.service";
 import {Paginated} from "../../shared/types/paginated.type";
 import {UserModel} from "../../shared/models/user.model";
-import {BehaviorSubject, combineLatest, Observable, Subject} from "rxjs";
-import {debounceTime, distinctUntilChanged, startWith, takeUntil} from "rxjs/operators";
+import {combineLatest, Observable, Subject} from "rxjs";
+import {debounceTime, distinctUntilChanged, takeUntil, tap} from "rxjs/operators";
+import {UserListService} from "../../shared/services/user-list.service";
 
 @Component({
   selector: 'app-home',
@@ -13,34 +14,37 @@ import {debounceTime, distinctUntilChanged, startWith, takeUntil} from "rxjs/ope
 })
 export class HomeComponent implements OnInit, OnDestroy {
   public users$: Observable<Paginated<UserModel>> | null = null;
-  public unsubscribe$: Subject<boolean> = new Subject();
-  public currentPage$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
-  public nameFilter$: Subject<string> = new Subject<string>();
+  private unsubscribe$: Subject<void> = new Subject();
 
   constructor(
-    private readonly userService: UserService,
+    private readonly userHttpService: UserHttpService,
+    public readonly userListService: UserListService,
     private cdr: ChangeDetectorRef
   ) {
   }
 
   ngOnInit(): void {
     combineLatest([
-      this.nameFilter$.pipe(
-        startWith(''),
+      this.userListService.nameFilter$.asObservable().pipe(
         debounceTime(400),
-        distinctUntilChanged()
+        distinctUntilChanged((prev, next) => {
+          if (prev !== next) {
+            this.userListService.changePage(1);
+          }
+          return prev === next;
+        }),
       ),
-      this.currentPage$
+      this.userListService.currentPage$.asObservable()
     ]).pipe(
-      takeUntil(this.unsubscribe$)
-    ).subscribe(([name, page]) => {
-      console.log(name, page);
-      this.users$ = this.userService.getUsers({
-        page,
-        name
-      });
-      this.cdr.detectChanges();
-    });
+      takeUntil(this.unsubscribe$),
+      tap(([name, page]) => {
+        this.users$ = this.userHttpService.getUsers({
+          page,
+          ...(name ? {name} : undefined)
+        });
+        this.cdr.detectChanges();
+      })
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
