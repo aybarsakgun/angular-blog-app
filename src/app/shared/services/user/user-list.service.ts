@@ -1,9 +1,7 @@
 import {Injectable} from "@angular/core";
 import {BehaviorSubject} from "rxjs";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserListService {
   public currentPage$: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   public nameFilter$: BehaviorSubject<string> = new BehaviorSubject<string>('');

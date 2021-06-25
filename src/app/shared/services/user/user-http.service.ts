@@ -1,19 +1,17 @@
 import {Injectable} from "@angular/core";
-import {HttpService} from "./http.service";
+import {HttpService} from "../http.service";
 import {environment} from 'src/environments/environment';
-import {Paginated} from "../types/paginated.type";
-import {UserModel} from "../models/user.model";
+import {Paginated} from "../../types/paginated.type";
+import {UserModel} from "../../models/user.model";
 import {Observable} from "rxjs";
-import {PostModel} from "../models/post.model";
+import {PostModel} from "../../models/post.model";
 import {map} from "rxjs/operators";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserHttpService extends HttpService {
   private readonly baseApiUrl = environment.baseApiUrl + '/users';
 
-  getUser(id: number): Observable<UserModel> {
+  getUser(id: number | null): Observable<UserModel> {
     return this.get(this.baseApiUrl + '/' + id).pipe(
       map((response: any) => (response.data))
     )
@@ -26,7 +24,7 @@ export class UserHttpService extends HttpService {
     return this.get<Paginated<UserModel>>(this.baseApiUrl, this.buildParameters(params));
   }
 
-  getUserPosts(userId: number): Observable<Paginated<PostModel>> {
+  getUserPosts(userId: number | null): Observable<Paginated<PostModel>> {
     return this.get<Paginated<PostModel>>(this.baseApiUrl + '/' + userId + '/posts');
   }
 }

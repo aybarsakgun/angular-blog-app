@@ -1,4 +1,0 @@
-<ng-container *ngIf="userWithPosts$ | async as data else loading">
-  <h1 class="display-4">{{ data.user.name }}</h1>
-</ng-container>
-<ng-template #loading>Loading...</ng-template>
