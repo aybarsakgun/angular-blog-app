@@ -4,6 +4,7 @@ import {StoreModule} from "@ngrx/store";
 import * as fromUser from './reducers/user.reducer';
 import {EffectsModule} from "@ngrx/effects";
 import {UserEffects} from "./effects/user.effects";
+import {UserHttpService} from "../../services/user/user-http.service";
 
 @NgModule({
   imports: [
@@ -11,6 +12,8 @@ import {UserEffects} from "./effects/user.effects";
     StoreModule.forFeature(fromUser.userFeatureKey, fromUser.reducer),
     EffectsModule.forFeature([UserEffects])
   ],
-  declarations: []
+  providers: [
+    UserHttpService
+  ]
 })
 export class UserStateModule {}

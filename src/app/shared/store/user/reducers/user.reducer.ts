@@ -4,40 +4,71 @@ import {Action, createReducer, on} from "@ngrx/store";
 import {UserActions} from "../index";
 
 export interface State {
-  userList: Paginated<UserModel> | null;
-  isLoading: boolean;
-  error: string;
+  list: {
+    isLoading: boolean;
+    error: string;
+    data: Paginated<UserModel> | null
+  },
+  lastViewedUsers: UserModel[]
 }
 
 export const userFeatureKey = 'user';
 
 export const initialState: State = {
-  userList: null,
-  isLoading: false,
-  error: ''
+  list: {
+    data: null,
+    error: '',
+    isLoading: false
+  },
+  lastViewedUsers: []
 };
 
 const userReducer = createReducer(
   initialState,
   on(
     UserActions.loadUserListRequested,
-    state => ({ ...state, isLoading: true, error: '' })
+    state => ({
+      ...state,
+      list: {
+        data: null,
+        isLoading: true,
+        error: ''
+      }})
   ),
   on(
     UserActions.loadUserListSucceeded,
     (state, { userList }) => ({
       ...state,
-      userList,
-      isLoading: false
+      list: {
+        data: userList,
+        isLoading: false,
+        error: ''
+      }
     })
   ),
   on(
     UserActions.loadUserListFailed,
     (state, { error }) => ({
       ...state,
-      error,
-      isLoading: false
+      list: {
+        data: null,
+        isLoading: false,
+        error
+      }
     })
+  ),
+  on(
+    UserActions.pushUserToLastViewedFiveUsers,
+    (state, user) => {
+      const checkUserExist = state.lastViewedUsers.find(lastViewedUser => lastViewedUser.id === user.id);
+      if (!checkUserExist) {
+        return {
+          ...state,
+          lastViewedUsers: [user, ...state.lastViewedUsers.filter((_, index) => index < 4)]
+        }
+      }
+      return state;
+    }
   )
 );
 

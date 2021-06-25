@@ -4,7 +4,9 @@ import {CommonModule} from "@angular/common";
 import {HomeComponent} from "./components/home.component";
 import {FormsModule} from "@angular/forms";
 import {PaginationModule} from "ngx-bootstrap/pagination";
-import {UserListService} from "./services/user-list.service";
+import {UserListService} from "../../shared/services/user/user-list.service";
+import {UserHttpService} from "../../shared/services/user/user-http.service";
+import {SharedModule} from "../../shared/shared.module";
 
 const routes: Routes = [
   {
@@ -21,9 +23,11 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     FormsModule,
-    PaginationModule
+    PaginationModule,
+    SharedModule
   ],
   providers: [
+    UserHttpService,
     UserListService
   ]
 })

@@ -16,3 +16,8 @@ export const loadUserListFailed = createAction(
   '[User API] Load User List Failed',
   props<{ error: string }>()
 );
+
+export const pushUserToLastViewedFiveUsers = createAction(
+  '[Last Viewed Users] Push User To Last Viewed Users',
+  props<UserModel>()
+);

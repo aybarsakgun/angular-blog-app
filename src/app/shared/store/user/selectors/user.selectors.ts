@@ -7,17 +7,17 @@ const getUserState = createFeatureSelector<fromUser.State>(
 
 export const selectUserList = createSelector(
   getUserState,
-  state => state.userList
+  state => state.list.data
 );
 
 export const selectUserListError = createSelector(
   getUserState,
-  state => state.error
+  state => state.list.error
 );
 
 export const selectUserListIsLoading = createSelector(
   getUserState,
-  state => state.isLoading
+  state => state.list.isLoading
 );
 
 export const selectUserListVm = createSelector(
@@ -29,4 +29,17 @@ export const selectUserListVm = createSelector(
     error,
     loading
   })
+);
+
+export const selectLastViewedUsers = createSelector(
+  getUserState,
+  state => state.lastViewedUsers
+);
+
+export const findUserWithId = (id: number) => createSelector(
+  selectUserList,
+  selectLastViewedUsers,
+  (userList, lastViewedUsers) => {
+    return userList?.data.find(user => user.id === id) || lastViewedUsers.find(user => user.id === id);
+  }
 );
