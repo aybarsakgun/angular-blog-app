@@ -5,4 +5,4 @@ ngApp.use(express.static('./dist/angular-blog-app'));
 ngApp.get('/*', function (request, response) {
   response.sendFile(path.join(__dirname, '/dist/angular-blog-app/index.html'));
 });
-ngApp.listen(8080);
+ngApp.listen(3000);
