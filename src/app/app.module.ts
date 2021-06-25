@@ -2,30 +2,43 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {StoreModule} from '@ngrx/store';
-import {HeaderComponent} from './layouts/home/header/header.component';
-import {AppRoutingModule} from "./app-routing.module";
-import {HomeComponent} from "./layouts/home/home.component";
-import {FooterComponent} from "./layouts/home/footer/footer.component";
+import {HeaderComponent} from './layouts/header/header.component';
+import {FooterComponent} from "./layouts/footer/footer.component";
+import {EffectsModule} from '@ngrx/effects';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {RouterModule, Routes} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
-import {PaginationModule} from "ngx-bootstrap/pagination";
-import {FormsModule} from "@angular/forms";
+import {UserStateModule} from "./shared/store/user/user-state.module";
+
+const routes: Routes = [
+  {
+    path: '',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
+  },
+  {
+    path: 'posts',
+    loadChildren: () => import('./pages/post/post.module').then(m => m.PostModule)
+  },
+];
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     HeaderComponent,
     FooterComponent
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({}, {}),
-    AppRoutingModule,
     HttpClientModule,
-    PaginationModule.forRoot(),
-    FormsModule
+    RouterModule.forRoot(routes),
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    !environment.production ?
+      StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production})
+      : [],
+    UserStateModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

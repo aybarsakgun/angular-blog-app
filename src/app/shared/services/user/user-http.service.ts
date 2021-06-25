@@ -1,10 +1,10 @@
 import {Injectable} from "@angular/core";
-import {HttpService} from "./http.service";
+import {HttpService} from "../http.service";
 import {environment} from 'src/environments/environment';
-import {Paginated} from "../types/paginated.type";
-import {UserModel} from "../models/user.model";
+import {Paginated} from "../../types/paginated.type";
+import {UserModel} from "../../models/user.model";
 import {Observable} from "rxjs";
-import {PostModel} from "../models/post.model";
+import {PostModel} from "../../models/post.model";
 import {map} from "rxjs/operators";
 
 @Injectable({

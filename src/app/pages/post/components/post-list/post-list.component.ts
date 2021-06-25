@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {UserHttpService} from "../../../../shared/services/user-http.service";
+import {UserHttpService} from "../../../../shared/services/user/user-http.service";
 import {combineLatest, Observable} from "rxjs";
 import {Paginated} from "../../../../shared/types/paginated.type";
 import {PostModel} from "../../../../shared/models/post.model";
