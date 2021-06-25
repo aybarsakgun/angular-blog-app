@@ -5,4 +5,7 @@ ngApp.use(express.static('./dist/angular-blog-app'));
 ngApp.get('/*', function (request, response) {
   response.sendFile(path.join(__dirname, '/dist/angular-blog-app/index.html'));
 });
-ngApp.listen(3000);
+const PORT = process.env.PORT || 8080;
+ngApp.listen(PORT, () => {
+  console.log(`App is running on port ${ PORT }`);
+});
