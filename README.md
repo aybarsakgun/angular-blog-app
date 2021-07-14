@@ -1,7 +1,7 @@
 # Angular Blog App
 
 ## Template
-<img src="template.jpg" height="400px">
+<img src="template.jpg">
 
 ## Todos
 * Prepare two pages (as visualized in the attachment)
