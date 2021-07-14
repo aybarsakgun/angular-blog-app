@@ -1,27 +1,48 @@
-# AngularBlogApp
+# Angular Blog App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.5.
+## Template
+<img src="template.jpg" height="400px">
 
-## Development server
+## Todos
+* Prepare two pages (as visualized in the attachment)
+    * A page which consists a paginated table of Users with a “Name” search filter
+in the route : Base url (main route / )
+    * A page which shows posts of a specific user in the route :
+/posts?userld—(user id)
+* Place a digital clock (with a format of 29/09/2020 17:13:15) on a small header on top
+of the page, and make it work continuously
+* Put the “latest viewed users” component on the right hand side, as a steady
+component which will always be visible.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Development Rules
 
-## Code scaffolding
+* Use Angular12 (latest version).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* Use ngx-bootstrap for creating table with pagination, and Bootstrap cards (if needed).
+https://valor-software.com/ngx-bootstrap
 
-## Build
+* Speaking of tabular data, server-side requests must involve a combined version of
+the name filter and the current page number, requiring the usage of RxJS library
+when fetching data. As the api dictates, set rows per page count to 20, as hardcoded.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+* Current page number and the name filter input will be presented as data streams,
+use behavior subjects for triggering changes on the fetch api.
 
-## Running unit tests
+* Latest viewed users component must make use of ngRx (Reactive State for Angular)
+library when saving the latest viewed users, and will always be available on the right
+sidebar. Inner part of this component must accumulate as the user visits different
+(distinct) user posts. It is very important that the store will always have 5 users, rather
+than piling up all the visited users.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+* Create date on the posts page, needs to be formatted as (dd/mm/yyyy hh:mm) using
+MomentJS.
 
-## Running end-to-end tests
+* Username will be presented as a title on the user posts page.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## API Information and Example Requests:
 
-## Further help
+##### Fetching user list: https://gorest.co.in/public-api/users
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+##### User list with pagination and filtering: https://gorest.co.in/public-api/users?name=varma&page=2
+
+##### Fetching user posts: https://gorest.co.in/public-api/users/:userld/posts
